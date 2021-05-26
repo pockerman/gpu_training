@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <iostream>
 #include <cuda.h>
 
@@ -18,7 +17,7 @@ const int ARRAY_BYTES = ARRAY_SIZE * sizeof(float);
 // generate input array on the host
 float h_int[ARRAY_SIZE];
 for(int i=0; i<ARRAY_SIZE; ++i){
-	h_in[i] = float(i);
+   h_in[i] = float(i);
 }
 
 float h_out[ARRAY_SIZE];
@@ -31,12 +30,12 @@ cudaMalloc((void **) &d_in, ARRAY_BYTES);
 cudaMalloc((void **) &d_out, ARRAY_BYTES);
 
 // transfer array to GPU 
-cudaMemcpy(d_in, h_in, ARRAy_BYTES, cudaMemcpyHostToDevice);
+cudaMemcpy(d_in, h_in, ARRAY_BYTES, cudaMemcpyHostToDevice);
 
 // launch kernel
-square<<<1, ARRARY_SIZE>>>(d_out, d_in);
+square<<<1, ARRAY_SIZE>>>(d_out, d_in);
 
-cudaMemcpy(h_out, d_out, ARRAy_BYTES, cudaMemcpyDeviceToHost);
+cudaMemcpy(h_out, d_out, ARRAY_BYTES, cudaMemcpyDeviceToHost);
 
 
 for(int i=0; i<ARRAY_SIZE; ++i){

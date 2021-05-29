@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <iostream>
 #include <cuda.h>
 
@@ -18,7 +17,7 @@ const int ARRAY_BYTES = ARRAY_SIZE * sizeof(float);
 // generate input array on the host
 float h_in[ARRAY_SIZE];
 for(int i=0; i<ARRAY_SIZE; ++i){
-	h_in[i] = float(i);
+   h_in[i] = float(i);
 }
 
 float h_out[ARRAY_SIZE];

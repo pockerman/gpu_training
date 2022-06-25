@@ -11,6 +11,7 @@ d_out[idx] = f * f;
 }
 
 int main(int argc, char** argv){
+
 const int ARRAY_SIZE = 64;
 const int ARRAY_BYTES = ARRAY_SIZE * sizeof(float);
 
@@ -34,6 +35,7 @@ cudaMemcpy(d_in, h_in, ARRAY_BYTES, cudaMemcpyHostToDevice);
 
 // launch kernel
 square<<<1, ARRAY_SIZE>>>(d_out, d_in);
+cudaDeviceSynchronize();
 
 cudaMemcpy(h_out, d_out, ARRAY_BYTES, cudaMemcpyDeviceToHost);
 

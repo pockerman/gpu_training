@@ -5,8 +5,8 @@
 
 
 // Kernel definition
-__global__ void mat_addition(float A[N][N], float B[N][N],
-                             float C[N][N])
+__global__ void mat_addition(float* A[N], float* B[N],
+                             float* C[N])
 {
     int i = threadIdx.x;
     int j = threadIdx.y;
@@ -40,25 +40,25 @@ for(int r=0; r<N; ++r){
 }
 
 
-float* dA = NULL;
-float* dB = NULL;
-float* dC = NULL; 
+float* dA[N];
+float* dB[N];
+float* dC[N]; 
 
 // allocate memory on the device
 
-cudaMalloc((void**)&dA, (N*N_COLS)*sizeof(float));
-cudaMalloc((void**)&dB, (N*N_COLS)*sizeof(float));
-cudaMalloc((void**)&dC, (N*N_COLS)*sizeof(float));
+cudaMalloc((void**)&dA, (N*N)*sizeof(float));
+cudaMalloc((void**)&dB, (N*N)*sizeof(float));
+cudaMalloc((void**)&dC, (N*N)*sizeof(float));
 
-cudaMemcpy(dA, A, (N_ROWS*N_COLS)*sizeof(float), cudaMemcpyHostToDevice);
-cudaMemcpy(dB, B, (N_ROWS*N_COLS)*sizeof(float), cudaMemcpyHostToDevice);
-cudaMemcpy(dC, C, (N_ROWS*N_COLS)*sizeof(float), cudaMemcpyHostToDevice);
+cudaMemcpy(dA, hA, (N*N)*sizeof(float), cudaMemcpyHostToDevice);
+cudaMemcpy(dB, hB, (N*N)*sizeof(float), cudaMemcpyHostToDevice);
+cudaMemcpy(dC, hC, (N*N)*sizeof(float), cudaMemcpyHostToDevice);
 
 int numBlocks = 1;
-dim3 threadsPerBlock(N_ROWS, N_ROWS);
+dim3 threadsPerBlock(N, N);
 mat_addition<<<numBlocks,threadsPerBlock>>>(dA, dB, dC);
 
-cudaMemcpy(hC, dC, (N_ROWS*N_COLS)*sizeof(float), cudaMemcpyDeviceToHost);
+cudaMemcpy(hC, dC, (N*N)*sizeof(float), cudaMemcpyDeviceToHost);
 
 cudaFree(dA); 
 cudaFree(dB); 

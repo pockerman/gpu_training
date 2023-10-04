@@ -2,9 +2,6 @@
 #include <cuda.h>
 #include <stdio.h>
 
-//#include "cuda_utils.h"
-
-
 __global__ void hello(){
 
 	printf("Hello world\n");
@@ -13,7 +10,12 @@ __global__ void hello(){
 int main(){
 
 hello<<<1, 10>>>();
+
+// wait until all threads execute
 cudaDeviceSynchronize();
+
+//reset the device
+cudaDeviceReset();
 
 return 0; 
 }
